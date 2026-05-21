@@ -30,5 +30,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: err.message || 'Internal server error' });
 });
 
+console.log('ENV CHECK:', {
+  DB_HOST: process.env.DB_HOST,
+  DB_NAME: process.env.DB_NAME,
+  NODE_ENV: process.env.NODE_ENV,
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`SMS API running on http://localhost:${PORT}`));
