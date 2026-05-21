@@ -1,10 +1,6 @@
-require('dotenv').config();
-
-// after
-// if (process.env.NODE_ENV !== 'production') {
-//   require('dotenv').config();
-// }
-
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 console.log('DB_HOST:', process.env.DB_HOST);
 console.log('DB_USER:', process.env.DB_USER);
@@ -29,7 +25,6 @@ const pool = mysql.createPool({
   enableKeepAlive: true,
   keepAliveInitialDelay: 30000,
 
-  // ✅ skip SSL on internal Railway network
   ...(isPrivateHost ? {} : { ssl: { rejectUnauthorized: false } }),
 });
 
@@ -43,7 +38,9 @@ pool.getConnection()
     conn.release();
   })
   .catch(err => {
-    console.error('MySQL connection error:', err.message);
+    console.error('MySQL connection error code:', err.code);
+    console.error('MySQL connection error message:', err.message);
+    console.error('MySQL full error:', JSON.stringify(err, null, 2));
     process.exit(1);
   });
 
